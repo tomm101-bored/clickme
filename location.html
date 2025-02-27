@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Location Info</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 20%;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">Loading location information...</div>
+  <script>
+    // Fetch and display the user's IP address using ipify API
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        const ip = data.ip;
+        document.getElementById('info').innerHTML = '<p>Your IP address: ' + ip + '</p>';
+        getGeoLocation();
+      })
+      .catch(err => {
+        document.getElementById('info').innerHTML = '<p>Error fetching IP address.</p>';
+        getGeoLocation();
+      });
+
+    // Function to retrieve geolocation using the HTML5 Geolocation API
+    function getGeoLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.getElementById('info').innerHTML += '<p>Geolocation is not supported by this browser.</p>';
+      }
+    }
+
+    // Callback for successful geolocation retrieval
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+      let locInfo = '<p>Latitude: ' + latitude + '</p>';
+      locInfo += '<p>Longitude: ' + longitude + '</p>';
+      locInfo += '<p>Accuracy: ' + accuracy + ' meters</p>';
+      document.getElementById('info').innerHTML += locInfo;
+    }
+
+    // Callback for errors in geolocation retrieval
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById('info').innerHTML += '<p>User denied the request for Geolocation.</p>';
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById('info').innerHTML += '<p>Location information is unavailable.</p>';
+          break;
+        case error.TIMEOUT:
+          document.getElementById('info').innerHTML += '<p>The request to get user location timed out.</p>';
+          break;
+        case error.UNKNOWN_ERROR:
+          document.getElementById('info').innerHTML += '<p>An unknown error occurred.</p>';
+          break;
+      }
+    }
+  </script>
+</body>
+</html>

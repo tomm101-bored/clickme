@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>1000 Buttons</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .button {
+      margin: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Create 1000 buttons
+    for (let i = 0; i < 1000; i++) {
+      let btn = document.createElement('button');
+      btn.className = 'button';
+      btn.textContent = 'Click Me';
+      btn.onclick = function() {
+        window.location.href = 'location.html';
+      };
+      document.body.appendChild(btn);
+    }
+
+    // Helper function to generate a random hex color
+    function randomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // List of fonts to choose from
+    const fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia', 'Comic Sans MS', 'Impact', 'Tahoma'];
+    function randomFont() {
+      return fonts[Math.floor(Math.random() * fonts.length)];
+    }
+
+    // Update the style of each button every second
+    setInterval(() => {
+      const buttons = document.querySelectorAll('.button');
+      buttons.forEach(btn => {
+        btn.style.backgroundColor = randomColor();
+        btn.style.color = randomColor();
+        btn.style.fontFamily = randomFont();
+      });
+    }, 1000);
+  </script>
+</body>
+</html>
